@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.callor.todo.persistance.TodoDao">
+
+	<select id="selectAll" resultType="TodoVO">
+		SELECT * FROM tbl_todolist
+	</select>
+
+	<select id="findByUsername" resultType="TodoVO">
+		SELECT * FROM
+		tbl_todolist
+		WHERE t_username = #{username}
+		ORDER BY t_sdate DESC,
+		t_stime DESC
+	</select>
+ 	<select id="searchAndPage" resultType="TodoVO">
+ 		SELECT * FROM
+		(
+			SELECT * FROM tbl_todolist
+			WHERE t_title LIKE CONCAT('%', #{search}, '%' )
+		) AS SUB
+		ORDER BY t_seq
+		LIMIT #{limit} OFFSET #{offset}
+ 	</select>
+
+	<select id="findById" resultType="TodoVO">
+		SELECT * FROM tbl_todolist
+		WHERE t_seq = #{t_seq}
+	</select>
+	<insert id="insert" parameterType="TodoVO">
+		INSERT INTO tbl_todolist(
+		t_username,
+		t_sdate,
+		t_stime,
+		t_content,
+		t_title,
+		t_place,
+		gdsImg,
+		gdsThumbImg,
+		ogName
+		) VALUES (
+		#{t_username},
+		NOW(),
+		#{t_stime},
+		#{t_content},
+		#{t_title},
+		#{t_place},
+		#{gdsImg},
+		#{gdsThumbImg},
+		#{ogName}
+		)
+	</insert>
+	<update id="update">
+		UPDATE tbl_todolist
+		SET
+		t_title = #{t_title},
+		t_place = #{t_place},
+		t_content = #{t_content},
+		gdsImg = #{gdsImg},
+		gdsThumbImg = #{gdsThumbImg}
+		WHERE t_seq = #{t_seq}
+	</update>
+	<delete id="delete"></delete>
+
+	<select id="create_todo_table">
+		CREATE TABLE IF NOT EXISTS tbl_todolist (
+
+		t_seq BIGINT auto_increment primary key,
+		t_username VARCHAR(20) NOT NULL,
+		t_sdate VARCHAR(20) NOT NULL,
+		t_stime VARCHAR(20) NOT NULL,
+		t_content VARCHAR(20) NOT NULL,
+		t_edate VARCHAR(20),
+		t_etime VARCHAR(20),
+		gdsThumbImg VARCHAR(200),
+		gdsImg VARCHAR(200)
+		)
+	</select>
+	<select id="getTodo" resultType="TodoVO">
+		SELECT
+		*
+		FROM
+		tbl_todolist
+		WHERE
+		t_seq = #{t_seq}
+	</select>
+</mapper>

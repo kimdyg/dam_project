@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.callor.todo.persistance.TodoDao2">
+	<select id="getTodo" resultType="TodoVO2">
+		SELECT
+		*
+		FROM
+		tbl_todolist2
+		WHERE
+		t_seq2 = #{t_seq2}
+	</select>
+
+	<select id="findByUsername" resultType="TodoVO2">
+		SELECT * FROM tbl_todolist2
+		<!-- WHERE t_username = #{username} -->
+		ORDER BY t_sdate DESC, t_stime DESC
+	</select>
+
+
+	<insert id="insert" parameterType="TodoVO2">
+		INSERT INTO tbl_todolist2(
+		t_username,
+		t_sdate,
+		t_stime,
+		t_content2,
+		t_title2,
+		t_place2,
+		gdsImg2,
+		gdsThumbImg2
+		) VALUES (
+		#{t_username},
+		NOW(),
+		#{t_stime},
+		#{t_content2},
+		#{t_title2},
+		#{t_place2},
+		#{gdsImg2},
+		#{gdsThumbImg2}
+		)
+	</insert>
+
+	<select id="create_todo_table2">
+		CREATE TABLE IF NOT EXISTS tbl_todolist2 (
+
+		t_seq2
+		BIGINT auto_increment primary key,
+		t_username VARCHAR(20) NOT NULL,
+		t_sdate VARCHAR(20) NOT NULL,
+		t_stime VARCHAR(20) NOT NULL,
+		t_content2 VARCHAR(20) NOT NULL,
+		t_edate VARCHAR(20),
+		t_etime VARCHAR(20),
+		gdsThumbImg2 VARCHAR(200),
+		gdsImg2 VARCHAR(200)
+		)
+	</select>
+	<update id="update">
+		UPDATE tbl_todolist2
+		SET
+		t_title2 = #{t_title2},
+		t_place2 = #{t_place2},
+		t_content2 = #{t_content2},
+		gdsImg2 = #{gdsImg2},
+		gdsThumbImg2 = #{gdsThumbImg2}
+		WHERE t_seq2 = #{t_seq2}
+	</update>
+	<select id="findById" resultType="TodoVO2">
+		SELECT * FROM tbl_todolist2
+		WHERE t_seq2 = #{t_seq2}
+	</select>
+	<select id="selectAll" resultType="TodoVO2">
+		SELECT * FROM tbl_todolist2
+	</select>
+</mapper>
